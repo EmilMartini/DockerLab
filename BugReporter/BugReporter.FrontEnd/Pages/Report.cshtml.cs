@@ -15,8 +15,9 @@ namespace BugReporter.Frontend.Pages
         {
 
         }
-        public void OnPostCreate(string description)
+        public void OnPost()
         {
+            var description = Request.Form["description"];
             // ta in description och posta till api
         }
     }
