@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace BugReporter.Frontend.Pages
 {
-    public class IndexModel : PageModel
+    public class ViewModel : PageModel
     {
-        
-        public IActionResult OnGet()
+        public void OnGet()
         {
-            return new RedirectToPageResult("/Report");
         }
     }
 }

@@ -8,15 +8,9 @@ using System.Threading.Tasks;
 
 namespace BugReporter.Frontend.Pages
 {
-    public class PrivacyModel : PageModel
+    public class ReportModel : PageModel
     {
-        private readonly ILogger<PrivacyModel> _logger;
-
-        public PrivacyModel(ILogger<PrivacyModel> logger)
-        {
-            _logger = logger;
-        }
-
+        
         public void OnGet()
         {
         }
