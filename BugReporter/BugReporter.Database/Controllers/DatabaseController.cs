@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace BugReporter.Database.Controllers
 {
-    [Route("Database")]
+    [Route("api/[controller]")]
     [ApiController]
     public class DatabaseController : ControllerBase
     {
@@ -15,11 +16,26 @@ namespace BugReporter.Database.Controllers
         }
 
         [HttpPost]
-        [Route("SaveToFile")]
+        [Route("File")]
         public IActionResult SaveToFile([FromBody]string content)
         {
-            dbClient.SaveToFile(content);
-            return new OkObjectResult("Successfully saved file.");
+            if (String.IsNullOrEmpty(content))
+                return NoContent();
+
+            if (dbClient.SaveToFile(content))
+            {
+                return new OkObjectResult("Successfully saved file.");
+            } else
+            {
+                return new BadRequestResult();
+            }
+        }
+
+        [HttpGet]
+        [Route("File")]
+        public IActionResult ReadFromFile()
+        {
+            return new OkObjectResult(dbClient.ReadFromFile());
         }
     }
 }
