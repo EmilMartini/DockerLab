@@ -1,29 +1,27 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace BugReporter.Database
 {
     public class DatabaseClient
     {
-        private string localPath;
-        private string currentDir;
-        private string fileName;
+        private string fileName = "BugReporter.json";
 
-        public DatabaseClient()
+        public List<Bug> ReadFromFile()
         {
-            currentDir = Environment.CurrentDirectory;
+            using (StreamReader r = new StreamReader(fileName))
+            {
+                string json = r.ReadToEnd();
+                List<Bug> items = JsonConvert.DeserializeObject<List<Bug>>(json);
+                return items;
+            }
         }
 
-        public void ReadFromFile()
+        public void SaveToFile(string contentBody)
         {
-            //Read file and convert to json
-        }
-
-        public void SaveToFile()
-        {
-            //Save and overwrite current file
+            string jsonString = JsonConvert.SerializeObject(contentBody);
+            File.WriteAllText(fileName, jsonString);
         }  
     }
 }

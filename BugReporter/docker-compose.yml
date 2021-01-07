@@ -12,7 +12,8 @@ services:
     build:
       context: .
       dockerfile: BugReporter.Database/Dockerfile
-
+    ports:
+        - "1337:80"
 
   bugreporter.frontend:
     image: ${DOCKER_REGISTRY-}bugreporterfrontend
