@@ -10,9 +10,14 @@ namespace BugReporter.Frontend.Pages
 {
     public class ReportModel : PageModel
     {
-        
+        public string Description { get; set; }
         public void OnGet()
         {
+
+        }
+        public void OnPostCreate(string description)
+        {
+            // ta in description och posta till api
         }
     }
 }
