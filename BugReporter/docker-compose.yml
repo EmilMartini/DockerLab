@@ -1,22 +1,22 @@
 version: '3.4'
 
 services:
-  bugreporter.bugapi:
-    image: ${DOCKER_REGISTRY-}bugreporterbugapi
-    build:
-      context: .
-      dockerfile: BugReporter.BugApi/Dockerfile
-
   bugreporter.database:
     image: ${DOCKER_REGISTRY-}bugreporterdatabase
     build:
       context: .
       dockerfile: BugReporter.Database/Dockerfile
 
-
-  bugreporter.frontend:
-    image: ${DOCKER_REGISTRY-}bugreporterfrontend
+  bugreporter.bugapi:
+    image: ${DOCKER_REGISTRY-}bugreporterbugapi
     build:
       context: .
-      dockerfile: BugReporter.FrontEnd/Dockerfile
+      dockerfile: BugReporter.BugApi/Dockerfile
+
+
+  bugreport.frontend:
+    image: ${DOCKER_REGISTRY-}bugreportfrontend
+    build:
+      context: .
+      dockerfile: BugReport.Frontend/Dockerfile
 
