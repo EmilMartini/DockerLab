@@ -1,17 +1,18 @@
 version: '3.4'
 
 services:
+  bugreporter.database:
+    image: ${DOCKER_REGISTRY-}bugreporterdatabase
+    build:
+      context: .
+      dockerfile: BugReporter.Database/Dockerfile
+
   bugreporter.bugapi:
     image: ${DOCKER_REGISTRY-}bugreporterbugapi
     build:
       context: .
       dockerfile: BugReporter.BugApi/Dockerfile
 
-  bugreporter.database:
-    image: ${DOCKER_REGISTRY-}bugreporterdatabase
-    build:
-      context: .
-      dockerfile: BugReporter.Database/Dockerfile
     ports:
         - "1337:80"
 
@@ -19,5 +20,5 @@ services:
     image: ${DOCKER_REGISTRY-}bugreporterfrontend
     build:
       context: .
-      dockerfile: BugReporter.FrontEnd/Dockerfile
+      dockerfile: BugReport.Frontend/Dockerfile
 

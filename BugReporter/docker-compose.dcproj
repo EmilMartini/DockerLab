@@ -3,10 +3,10 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>cf1db1c5-be65-4b27-a024-ef5ca7b9728d</ProjectGuid>
+    <ProjectGuid>baad150c-80e5-4a9c-9136-401759d17908</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/weatherforecast</DockerServiceUrl>
-    <DockerServiceName>bugreporter.bugapi</DockerServiceName>
+    <DockerServiceName>bugreporter.database</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
