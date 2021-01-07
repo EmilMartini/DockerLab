@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -18,10 +19,17 @@ namespace BugReporter.Database
             }
         }
 
-        public void SaveToFile(string contentBody)
+        public bool SaveToFile(string contentBody)
         {
-            string jsonString = JsonConvert.SerializeObject(contentBody);
-            File.WriteAllText(fileName, jsonString);
+            try
+            {
+                File.WriteAllText(fileName, contentBody);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }  
     }
 }
