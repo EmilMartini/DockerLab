@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BugReporter.FrontEnd
+namespace BugReporter.Frontend
 {
     public class Program
     {
