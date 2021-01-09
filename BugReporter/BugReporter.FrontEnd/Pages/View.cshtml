@@ -1,6 +1,20 @@
 ﻿@page
 @model ViewModel
 @{
-    ViewData["Title"] = "View Page";
+    ViewData["Title"] = "Bug reports to do";
 }
 <h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    @foreach (var item in Model.BugsToComplete)
+    {
+    <div class="row">
+        <div class="col-2">
+            <button type="submit" asp-route-id="@item.Id" class="btn btn-info">Change Status</button>
+        </div>
+        <div class="col-10">
+            <p> @item.Description</p>
+        </div>
+    </div>
+    }
+</form>
