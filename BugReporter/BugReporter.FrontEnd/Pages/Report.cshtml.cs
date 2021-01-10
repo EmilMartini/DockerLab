@@ -16,19 +16,17 @@ namespace BugReporter.Frontend.Pages
     public class ReportModel : PageModel
     {
         public string Description { get; set; }
-        public void OnGet()
-        {
-
-        }
         public void OnPost()
         {
-            //TODO add checks for valid inputs
             var description = Request.Form["description"].ToString();
-            var restClient = new RestClient("http://localhost:1336/api/Report");
-            var request = new RestRequest("/Bug", Method.POST);
-            request.RequestFormat = DataFormat.Json;
-            request.AddJsonBody(description);
-            var restResponse = restClient.Execute(request);
+            if (description != "")
+            {
+                var restClient = new RestClient("http://localhost:1336/api/Report");
+                var request = new RestRequest("/Bug", Method.POST);
+                request.RequestFormat = DataFormat.Json;
+                request.AddJsonBody(description);
+                var restResponse = restClient.Execute(request);
+            }
         }
     }
 }

@@ -20,7 +20,6 @@ namespace BugReporter.Frontend.Pages
         }
         public IActionResult OnPost(int id)
         {
-            //TODO api call skicka id för att byta status
             ChangeBugStatusDoneToTrue(id);
             UpdateBugsToComplete();
             return Page();
