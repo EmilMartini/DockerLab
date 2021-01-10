@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,31 +20,27 @@ namespace BugReporter.Frontend.Pages
         }
         public IActionResult OnPost(int id)
         {
-            //TODO api call skicka id för att byta status
+            ChangeBugStatusDoneToFalse(id);
             UpdateCompletedBugs();
             return Page();
         }
         private void UpdateCompletedBugs()
         {
-            //TODO api call för att hämta lista av buggar
-            CompletedBugs = new List<Bug>()
-            {
-                new Bug()
-                {
-                    Id = 1,
-                    Description = "asdfadfdasfasf",
-                },
-                new Bug()
-                {
-                    Id = 2,
-                    Description = "sdfgsfdgsd",
-                },
-                new Bug()
-                {
-                    Id = 3,
-                    Description = "test 3",
-                }
-            };
+            var restClient = new RestClient("http://localhost:1336/api/Report");
+            var request = new RestRequest("/Bug", Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.AddQueryParameter("done", "true");
+            var restResponse = restClient.Execute(request);
+            CompletedBugs = JsonConvert.DeserializeObject<List<Bug>>(restResponse.Content);
+        }
+        private void ChangeBugStatusDoneToFalse(int id)
+        {
+            var restClient = new RestClient("http://localhost:1336/api/Report");
+            var request = new RestRequest("/Bug", Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            request.AddQueryParameter("id", id.ToString());
+            request.AddQueryParameter("status", "false");
+            var restResponse = restClient.Execute(request);
         }
     }
 }

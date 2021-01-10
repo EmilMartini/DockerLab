@@ -22,8 +22,8 @@ namespace BugReporter.Frontend.Pages
         }
         public void OnPost()
         {
+            //TODO add checks for valid inputs
             var description = Request.Form["description"].ToString();
-
             var restClient = new RestClient("http://localhost:1336/api/Report");
             var request = new RestRequest("/Bug", Method.POST);
             request.RequestFormat = DataFormat.Json;
