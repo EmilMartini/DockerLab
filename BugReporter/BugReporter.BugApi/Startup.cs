@@ -26,6 +26,17 @@ namespace BugReporter.BugApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "_allowedOrigins",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:80")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,11 +47,11 @@ namespace BugReporter.BugApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors("_allowedOrigins");
 
             app.UseEndpoints(endpoints =>
             {

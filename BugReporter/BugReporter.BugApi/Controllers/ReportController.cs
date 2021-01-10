@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,12 +25,12 @@ namespace BugReporter.BugApi.Controllers
         {
             client = new HttpClient();
             rnd = new Random();
-            baseUrl = "http://localhost:1337/api/Database";
+            baseUrl = "http://Bugreporter.database:80/api/Database";
         }
 
         [HttpPost]
         [Route("Bug")]
-        public IActionResult CreateBug(string description)
+        public IActionResult CreateBug([FromBody] string description)
         {
             var bug = new Bug()
             {
@@ -37,38 +39,104 @@ namespace BugReporter.BugApi.Controllers
             };
 
             var response = client.GetAsync(baseUrl + "/File").Result;
+
             if (response.IsSuccessStatusCode)
             {
                 var bugs = JsonConvert.DeserializeObject<List<Bug>>(response.Content.ReadAsStringAsync().Result);
-
-                while(bugs.Where(i => i.Id == bug.Id).ToList().Count > 0)
+                if (bugs == null)
+                {
+                    bugs = new List<Bug>();
+                }
+                while (bugs.Where(i => i.Id == bug.Id).ToList().Count > 0)
                 {
                     bug.Id = rnd.Next(0, int.MaxValue);
                 }
-
                 bugs.Add(bug);
 
-                var httpContent = new HttpRequestMessage(HttpMethod.Post, baseUrl + "/File");
-                httpContent.Headers.Add("content-type", "application/json");
-                httpContent.Content = new StringContent(JsonConvert.SerializeObject(bugs), Encoding.UTF8, "application/json");
+                var restClient = new RestClient(baseUrl);
+                var request = new RestRequest("/File", Method.POST);
+                request.RequestFormat = DataFormat.Json;
+                request.AddJsonBody(bugs);
+                var restResponse = restClient.Execute(request);
 
-                response = client.SendAsync(httpContent).Result;
-
-                if (response.IsSuccessStatusCode)
+                if (restResponse.StatusCode == HttpStatusCode.OK)
                 {
                     return Ok();
                 }
+                else
+                {
+                    return new BadRequestObjectResult(restResponse.Content);
+                }
+            }
+            else
+            {
+                return new BadRequestObjectResult(response);
+            }
+        }
+
+        [HttpGet]
+        [Route("Bug")]
+        public IActionResult GetAllBugs([FromQuery] string done)
+        {
+            var response = client.GetAsync(baseUrl + "/File").Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest();
             }
 
-            return BadRequest();
+            var bugs = JsonConvert.DeserializeObject<List<Bug>>(response.Content.ReadAsStringAsync().Result);
+            if (bugs == null)
+            {
+                return NoContent();
+            }
+            else
+            {
+                bool isDone = bool.Parse(done);
+                return Ok(bugs.Where(i => i.Done == isDone).ToList());
+            }
+        }
+
+        [HttpPut]
+        [Route("Bug")]
+        public IActionResult SetBugStatus([FromQuery] string id, string status)
+        {
+            var bugId = int.Parse(id);
+            var bugStatus = bool.Parse(status);
+            var response = client.GetAsync(baseUrl + "/File").Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest();
+            }
+
+            var content = JsonConvert.DeserializeObject<List<Bug>>(response.Content.ReadAsStringAsync().Result);
+            if (content == null)
+            {
+                return NoContent();
+            }
+
+            if(content.Where(i => i.Id == bugId).FirstOrDefault() == null)
+            {
+                return new BadRequestObjectResult("No bug with that ID.");
+            } 
+            else
+            {
+                content.Where(i => i.Id == bugId).FirstOrDefault().Done = bugStatus;
+            }
+
+            var restClient = new RestClient(baseUrl);
+            var request = new RestRequest("/File", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddJsonBody(content);
+            var restResponse = restClient.Execute(request);
+
+            if (restResponse.StatusCode == HttpStatusCode.OK)
+            {
+                return Ok();
+            }
+            else
+            {
+                return new BadRequestObjectResult(restResponse.Content);
+            }
         }
     }
-
-    //ta in string skapa en bug, skicka till DB
-
-    // hämta lista på alla !DONE buggar och retunera den listan
-
-    // hämta lista på alla DONE buggar och returnar den listan
-
-    // ta in ID på bug och byta status på den buggen
 }

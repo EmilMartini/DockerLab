@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
 
 namespace BugReporter.Database.Controllers
 {
@@ -17,17 +20,19 @@ namespace BugReporter.Database.Controllers
 
         [HttpPost]
         [Route("File")]
-        public IActionResult SaveToFile([FromBody]string content)
+        public IActionResult SaveToFile([FromBody]List<Bug> content)
         {
-            if (String.IsNullOrEmpty(content))
+            var bugs = JsonConvert.SerializeObject(content);
+
+            if (String.IsNullOrEmpty(bugs))
                 return NoContent();
 
-            if (dbClient.SaveToFile(content))
+            if (dbClient.SaveToFile(bugs))
             {
                 return new OkObjectResult("Successfully saved file.");
             } else
             {
-                return new BadRequestResult();
+                return new BadRequestObjectResult("Something went wrong");
             }
         }
 

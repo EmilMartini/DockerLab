@@ -11,11 +11,19 @@ namespace BugReporter.Database
 
         public List<Bug> ReadFromFile()
         {
-            using (StreamReader r = new StreamReader(fileName))
+            try
             {
-                string json = r.ReadToEnd();
-                List<Bug> items = JsonConvert.DeserializeObject<List<Bug>>(json);
-                return items;
+                using (StreamReader r = new StreamReader(fileName))
+                {
+                    string json = r.ReadToEnd();
+                    List<Bug> items = JsonConvert.DeserializeObject<List<Bug>>(json);
+                    return items;
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                SaveToFile("");
+                return new List<Bug>();
             }
         }
 
