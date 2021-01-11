@@ -31,4 +31,4 @@ services:
 
 networks:
   my-network:
-    external: true
+    external: false
