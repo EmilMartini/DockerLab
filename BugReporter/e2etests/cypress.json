@@ -1,0 +1,6 @@
+{
+  "chromeWebSecurity": false,
+  "test_url":  "http://localhost:80"
+
+
+}

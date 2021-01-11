@@ -6,14 +6,15 @@
 <h1>@ViewData["Title"]</h1>
 
 <form method="post">
-    @foreach (var item in Model.BugsToComplete)
+    @foreach (var item in Model.BugsToComplete.Select((value, i) => new { i , value}))
     {
+
     <div class="row">
         <div class="col-2">
-            <button type="submit" asp-route-id="@item.Id" class="btn btn-info">Change Status</button>
+            <button type="submit" id="@item.i" class="btn btn-info" asp-route-id="@item.value.Id">Change Status</button>
         </div>
         <div class="col-10">
-            <p> @item.Description</p>
+            <p> @item.value.Description</p>
         </div>
     </div>
     }
