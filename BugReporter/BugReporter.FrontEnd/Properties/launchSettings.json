@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "BugReporter.Frontend": {
+    "BugReporter.FrontEnd": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

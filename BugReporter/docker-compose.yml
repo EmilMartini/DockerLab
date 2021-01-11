@@ -5,13 +5,13 @@ services:
     image: ${DOCKER_REGISTRY-}bugreporterfrontend
     build:
       context: .
-      dockerfile: BugReporter.Frontend/Dockerfile
+      dockerfile: BugReporter.FrontEnd/Dockerfile
     ports:
     - "1234:80" 
     networks:
         - my-network
     depends_on:
-        - "BugReporter.BugApi"
+        - "bugreporter.bugapi"
 
   bugreporter.database:
     image: ${DOCKER_REGISTRY-}bugreporterdatabase

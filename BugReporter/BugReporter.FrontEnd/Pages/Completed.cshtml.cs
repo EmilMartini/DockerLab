@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BugReporter.Frontend.Pages
+namespace BugReporter.FrontEnd.Pages
 {
     public class CompletedModel : PageModel
     {

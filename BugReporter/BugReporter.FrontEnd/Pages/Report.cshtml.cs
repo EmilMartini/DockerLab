@@ -11,7 +11,7 @@ using RestSharp;
 using System.Net;
 using System.Net.Http;
 
-namespace BugReporter.Frontend.Pages
+namespace BugReporter.FrontEnd.Pages
 {
     public class ReportModel : PageModel
     {

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BugReporter.Frontend
+namespace BugReporter.FrontEnd
 {
     public class Startup
     {
