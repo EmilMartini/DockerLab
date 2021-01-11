@@ -6,8 +6,12 @@ services:
     build:
       context: .
       dockerfile: BugReporter.Frontend/Dockerfile
+    ports:
+    - "1234:80" 
     networks:
         - my-network
+    depends_on:
+        - "BugReporter.BugApi"
 
   bugreporter.database:
     image: ${DOCKER_REGISTRY-}bugreporterdatabase

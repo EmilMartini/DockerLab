@@ -26,7 +26,7 @@ namespace BugReporter.Frontend.Pages
         }
         private void UpdateBugsToComplete()
         {
-            var restClient = new RestClient("http://localhost:1336/api/Report");
+            var restClient = new RestClient("http://bugreporter.bugapi:80/api/Report");
             var request = new RestRequest("/Bug", Method.GET);
             request.RequestFormat = DataFormat.Json;
             request.AddQueryParameter("done", "false");
@@ -35,7 +35,7 @@ namespace BugReporter.Frontend.Pages
         }
         private void ChangeBugStatusDoneToTrue(int id)
         {
-            var restClient = new RestClient("http://localhost:1336/api/Report");
+            var restClient = new RestClient("http://bugreporter.bugapi:80/api/Report");
             var request = new RestRequest("/Bug", Method.PUT);
             request.RequestFormat = DataFormat.Json;
             request.AddQueryParameter("id", id.ToString());

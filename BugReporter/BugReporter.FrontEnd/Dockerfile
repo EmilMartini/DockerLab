@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["BugReporter.Frontend/BugReporter.Frontend.csproj", "BugReporter.Frontend/"]
-RUN dotnet restore "BugReporter.Frontend/BugReporter.Frontend.csproj"
+COPY ["BugReporter.FrontEnd/BugReporter.Frontend.csproj", "BugReporter.FrontEnd/"]
+RUN dotnet restore "BugReporter.FrontEnd/BugReporter.Frontend.csproj"
 COPY . .
-WORKDIR "/src/BugReporter.Frontend"
+WORKDIR "/src/BugReporter.FrontEnd"
 RUN dotnet build "BugReporter.Frontend.csproj" -c Release -o /app/build
 
 FROM build AS publish
@@ -19,4 +19,4 @@ RUN dotnet publish "BugReporter.Frontend.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "BugReporter.Frontend.dll"]
+ENTRYPOINT ["dotnet", "BugReporter.FrontEnd.dll"]

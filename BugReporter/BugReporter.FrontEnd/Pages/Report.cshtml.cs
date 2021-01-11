@@ -21,7 +21,7 @@ namespace BugReporter.Frontend.Pages
             var description = Request.Form["description"].ToString();
             if (description != "")
             {
-                var restClient = new RestClient("http://localhost:1336/api/Report");
+                var restClient = new RestClient("http://bugreporter.bugapi:80/api/Report");
                 var request = new RestRequest("/Bug", Method.POST);
                 request.RequestFormat = DataFormat.Json;
                 request.AddJsonBody(description);
