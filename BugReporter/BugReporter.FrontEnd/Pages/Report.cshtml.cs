@@ -16,17 +16,24 @@ namespace BugReporter.FrontEnd.Pages
     public class ReportModel : PageModel
     {
         public string Description { get; set; }
-        public void OnPost()
+
+        public IActionResult OnGet()
+        {
+            return Page();
+        }
+        public IActionResult OnPost()
         {
             var description = Request.Form["description"].ToString();
             if (description != "")
             {
-                var restClient = new RestClient("http://bugreporter.bugapi:80/api/Report");
+                var restClient = new RestClient("http://bugreporter.bugapi/api/Report");
                 var request = new RestRequest("/Bug", Method.POST);
                 request.RequestFormat = DataFormat.Json;
                 request.AddJsonBody(description);
+                request.AddHeader("Sec-Fetch-Dest", "document");
                 var restResponse = restClient.Execute(request);
             }
+            return Page();
         }
     }
 }

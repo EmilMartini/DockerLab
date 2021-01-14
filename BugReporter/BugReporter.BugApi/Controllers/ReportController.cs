@@ -30,6 +30,7 @@ namespace BugReporter.BugApi.Controllers
 
         [HttpPost]
         [Route("Bug")]
+        [IgnoreAntiforgeryToken]
         public IActionResult CreateBug([FromBody] string description)
         {
             var bug = new Bug()
@@ -97,6 +98,7 @@ namespace BugReporter.BugApi.Controllers
         }
 
         [HttpPut]
+        [IgnoreAntiforgeryToken]
         [Route("Bug")]
         public IActionResult SetBugStatus([FromQuery] string id, string status)
         {

@@ -1,14 +1,16 @@
 it('open page', () => {
-    cy.visit('http://localhost:1234/Report')
+    cy.visit("http://localhost:1234")
 })
 
-
 it('create bug report', () => {
-    cy.get('#box').type('Test nummer 2')
+    cy.wait(1000);
+    cy.get('#box').type('Test nummer 2');
+    cy.wait(1000);
 })
 //
 it('press report button', () => {
     cy.get('#reportbutton').click()
+    //cy.visit('http://bugreporter.frontend/Report')
 })
 //
 

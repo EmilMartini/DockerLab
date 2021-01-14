@@ -4,8 +4,8 @@ services:
   bugreporter.frontend:
     image: ${DOCKER_REGISTRY-}bugreporterfrontend
     build:
-      context: .
-      dockerfile: BugReporter.FrontEnd/Dockerfile
+      context: ./BugReporter.FrontEnd
+      dockerfile: Dockerfile
     ports:
     - "1234:80" 
     networks:
@@ -16,8 +16,8 @@ services:
   bugreporter.database:
     image: ${DOCKER_REGISTRY-}bugreporterdatabase
     build:
-      context: .
-      dockerfile: BugReporter.Database/Dockerfile
+      context: ./BugReporter.Database
+      dockerfile: Dockerfile
     ports:
         - "1337:80"
     networks:
@@ -26,8 +26,8 @@ services:
   bugreporter.bugapi:
     image: ${DOCKER_REGISTRY-}bugreporterbugapi
     build:
-      context: .
-      dockerfile: BugReporter.BugApi/Dockerfile
+      context: ./BugReporter.BugApi
+      dockerfile: Dockerfile
     ports:
         - "1336:80" 
     networks:
