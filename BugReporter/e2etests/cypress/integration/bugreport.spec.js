@@ -3,24 +3,16 @@ it('open page', () => {
 })
 
 it('create bug report', () => {
-    cy.wait(1000);
-    cy.get('#box').type('Test nummer 2');
-    cy.wait(1000);
-})
-//
-it('press report button', () => {
+    cy.get('#box').type('Test');
     cy.get('#reportbutton').click()
-    //cy.visit('http://bugreporter.frontend/Report')
-})
-//
 
+})
 it('press viewpage button', () => {
     cy.get('#viewpage').click()
+    cy.get('#0').click()
 })
 
 it('press completepage button', () => {
     cy.get('#completepage').click()
-})
-it('press reportpage button', () => {
-    cy.get('#reportpage').click()
+    cy.get('#0').click()
 })
