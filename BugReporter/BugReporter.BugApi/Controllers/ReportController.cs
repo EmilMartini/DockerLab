@@ -96,7 +96,7 @@ namespace BugReporter.BugApi.Controllers
                 return Ok(bugs.Where(i => i.Done == isDone).ToList());
             }
         }
-
+        
         [HttpPut]
         [IgnoreAntiforgeryToken]
         [Route("Bug")]
@@ -116,10 +116,10 @@ namespace BugReporter.BugApi.Controllers
                 return NoContent();
             }
 
-            if(content.Where(i => i.Id == bugId).FirstOrDefault() == null)
+            if (content.Where(i => i.Id == bugId).FirstOrDefault() == null)
             {
                 return new BadRequestObjectResult("No bug with that ID.");
-            } 
+            }
             else
             {
                 content.Where(i => i.Id == bugId).FirstOrDefault().Done = bugStatus;
@@ -140,5 +140,48 @@ namespace BugReporter.BugApi.Controllers
                 return new BadRequestObjectResult(restResponse.Content);
             }
         }
+
+        [HttpDelete]
+        [IgnoreAntiforgeryToken]
+        [Route("Bug")]
+        public IActionResult DeleteTestCase()
+        {
+            var response = client.GetAsync(baseUrl + "/File").Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                return BadRequest();
+            }
+
+            var content = JsonConvert.DeserializeObject<List<Bug>>(response.Content.ReadAsStringAsync().Result);
+            if (content == null)
+            {
+                return NoContent();
+            }
+
+            if (content.Where(i => i.Description == "This is a test log and it is going to be deleted 2545151984654651681635161355165132165416546513521651651").FirstOrDefault() == null)
+            {
+                return new NoContentResult();
+            }
+            else
+            {
+                content = content.Where(i => i.Description != "This is a test log and it is going to be deleted 2545151984654651681635161355165132165416546513521651651").ToList();
+            }
+
+            var restClient = new RestClient(baseUrl);
+            var request = new RestRequest("/File", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddJsonBody(content);
+            var restResponse = restClient.Execute(request);
+
+            if (restResponse.StatusCode == HttpStatusCode.OK)
+            {
+                return Ok();
+            }
+            else
+            {
+                return new BadRequestObjectResult(restResponse.Content);
+            }
+        }
     }
+
 }
